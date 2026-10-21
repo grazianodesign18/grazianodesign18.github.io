@@ -43,7 +43,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- FontAwesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Fallback SHA-256 for non-secure local IPs -->
+    <!-- Fallback SHA-256 for cryptographic challenge generation -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/js-sha256/0.9.0/sha256.min.js"></script>
     
     <!-- Google Fonts -->
@@ -152,7 +152,7 @@
                         <i class="fa-brands fa-spotify text-sm text-white"></i>
                         <span>Connect Spotify Account</span>
                     </button>
-                    <p id="redirect-uri-hint" class="text-[9px] text-zinc-500 font-medium px-4 text-center"></p>
+                    <p class="text-[9px] text-zinc-500 font-medium px-4 text-center">Hardcoded for GitHub Pages</p>
                 </div>
 
                 <div id="spotify-player-view" class="hidden w-full flex flex-col gap-2.5 p-2 rounded-2xl transition-all duration-700 relative overflow-hidden">
@@ -239,11 +239,6 @@
                     </div>
                 </div>
 
-                <div class="flex flex-col gap-1.5">
-                    <span class="text-zinc-300">Spotify Client ID</span>
-                    <input type="text" id="cfg-spotify-id" placeholder="Paste Spotify Client ID..." class="bg-zinc-900 border border-zinc-800 rounded-lg p-2 text-white focus:outline-none focus:border-zinc-500 font-mono text-[10px]">
-                </div>
-
                 <div class="pt-3 border-t border-zinc-800 flex justify-between items-center">
                     <span id="spotify-account-status" class="text-[10px] text-zinc-500 font-bold">Spotify: Not Connected</span>
                     <button id="logout-spotify-btn" class="hidden text-[10px] text-zinc-400 hover:underline font-bold">Disconnect</button>
@@ -259,7 +254,7 @@
             tempUnit: 'C',
             tempC: 22,
             burnIn: true,
-            spotifyClientId: localStorage.getItem('spotify_custom_client_id') || '6d028e5d08564a9fbcc4815a51167a1b',
+            spotifyClientId: '33d20f4088af4ba08106bc7082afbd5f', // Hardcoded Client ID
             accessToken: null,
             isPlaying: false,
             trackDuration: 0,
@@ -301,21 +296,9 @@
         const unitF = document.getElementById('unit-f');
         const spotifyAccountStatus = document.getElementById('spotify-account-status');
         const logoutSpotifyBtn = document.getElementById('logout-spotify-btn');
-        const cfgSpotifyId = document.getElementById('cfg-spotify-id');
-        const redirectUriHint = document.getElementById('redirect-uri-hint');
 
-        cfgSpotifyId.value = state.spotifyClientId;
-
-        const REDIRECT_URI = window.location.origin + window.location.pathname;
-        redirectUriHint.textContent = `Required Redirect URI: ${REDIRECT_URI}`;
-
-        cfgSpotifyId.addEventListener('input', (e) => {
-            const val = e.target.value.trim();
-            if (val) {
-                state.spotifyClientId = val;
-                localStorage.setItem('spotify_custom_client_id', val);
-            }
-        });
+        // Hardcoded Redirect URI for GitHub Pages
+        const REDIRECT_URI = 'https://grazianodesign18.github.io/';
 
         function updateClock() {
             const now = new Date();
@@ -428,7 +411,6 @@
                 return btoa(String.fromCharCode.apply(null, new Uint8Array(digest)))
                     .replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
             } else {
-                // Fallback using js-sha256 library for non-secure local HTTP IPs
                 const hashBytes = sha256.array(codeVerifier);
                 return btoa(String.fromCharCode.apply(null, hashBytes))
                     .replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
